@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>数字文化 — 校园兴趣社群平台</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --peach: #f9c6a0;
+    --coral: #f07c5a;
+    --lavender: #c9b8f0;
+    --lilac: #e8dff8;
+    --soft-purple: #a88de0;
+    --cream: #fdf6ee;
+    --text-dark: #1a1025;
+    --text-mid: #4a3d60;
+    --text-light: #8b7aa8;
+    --white: #ffffff;
+    --card-bg: rgba(255,255,255,0.75);
+    --radius: 18px;
+    --radius-lg: 28px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans SC', sans-serif;
+    background: var(--cream);
+    color: var(--text-dark);
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 48px;
+    background: rgba(253,246,238,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(200,180,240,0.25);
+  }
+  .nav-logo {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 20px; font-weight: 700;
+    color: var(--text-dark);
+    letter-spacing: 0.05em;
+  }
+  .nav-logo span { color: var(--coral); }
+  .nav-links { display: flex; gap: 32px; }
+  .nav-links a {
+    text-decoration: none; font-size: 14px; font-weight: 500;
+    color: var(--text-mid);
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--coral); }
+  .nav-cta {
+    background: var(--text-dark); color: var(--white);
+    border: none; padding: 10px 24px; border-radius: 50px;
+    font-size: 14px; font-weight: 500; cursor: pointer;
+    font-family: inherit;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .nav-cta:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(26,16,37,0.18); }
+
+  /* HERO */
+  .hero {
+    min-height: 90vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center;
+    padding: 80px 24px 60px;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(160deg, #fde8d4 0%, #f4dff5 40%, #d9cef5 70%, #c3b4ee 100%);
+  }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.6);
+    border: 1px solid rgba(200,180,240,0.5);
+    border-radius: 50px;
+    padding: 6px 18px;
+    font-size: 13px; font-weight: 500; color: var(--soft-purple);
+    margin-bottom: 28px;
+    backdrop-filter: blur(8px);
+  }
+  .hero h1 {
+    font-family: 'Noto Serif SC', serif;
+    font-size: clamp(36px, 6vw, 72px);
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--text-dark);
+    max-width: 720px;
+    margin-bottom: 22px;
+    letter-spacing: -0.02em;
+  }
+  .hero h1 em {
+    font-style: normal;
+    background: linear-gradient(90deg, var(--coral), var(--soft-purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-sub {
+    font-size: 18px; color: var(--text-mid); max-width: 480px;
+    line-height: 1.7; margin-bottom: 40px;
+  }
+  .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; margin-bottom: 72px; }
+  .btn-primary {
+    background: var(--text-dark); color: var(--white);
+    border: none; padding: 14px 32px; border-radius: 50px;
+    font-size: 16px; font-weight: 500; cursor: pointer;
+    font-family: inherit;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(26,16,37,0.22); }
+  .btn-outline {
+    background: transparent; color: var(--text-dark);
+    border: 1.5px solid rgba(26,16,37,0.25); padding: 14px 32px; border-radius: 50px;
+    font-size: 16px; font-weight: 500; cursor: pointer;
+    font-family: inherit;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .btn-outline:hover { background: rgba(255,255,255,0.5); border-color: var(--text-dark); }
+
+  /* hero cards preview */
+  .hero-preview {
+    display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
+    max-width: 900px;
+  }
+  .preview-card {
+    background: rgba(255,255,255,0.75);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,0.8);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    min-width: 160px;
+    box-shadow: 0 8px 32px rgba(100,80,160,0.12);
+    animation: floatCard 4s ease-in-out infinite;
+  }
+  .preview-card:nth-child(2) { animation-delay: 0.8s; }
+  .preview-card:nth-child(3) { animation-delay: 1.6s; }
+  .preview-card:nth-child(4) { animation-delay: 2.4s; }
+  @keyframes floatCard {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+  .pc-icon { font-size: 28px; margin-bottom: 8px; }
+  .pc-label { font-size: 13px; color: var(--text-light); font-weight: 400; }
+  .pc-value { font-size: 22px; font-weight: 700; color: var(--text-dark); font-family: 'Noto Serif SC', serif; }
+
+  /* SECTION COMMON */
+  section { padding: 96px 48px; }
+  .section-label {
+    font-size: 12px; font-weight: 700; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--soft-purple);
+    margin-bottom: 16px;
+  }
+  .section-title {
+    font-family: 'Noto Serif SC', serif;
+    font-size: clamp(28px, 4vw, 48px);
+    font-weight: 700; line-height: 1.25;
+    color: var(--text-dark);
+    margin-bottom: 16px;
+  }
+  .section-desc {
+    font-size: 17px; color: var(--text-mid); line-height: 1.8;
+    max-width: 560px;
+  }
+  .container { max-width: 1100px; margin: 0 auto; }
+
+  /* FEATURES SPLIT */
+  .features-split {
+    background: var(--white);
+  }
+  .features-split .inner {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+    max-width: 1100px; margin: 0 auto;
+  }
+  .feature-visual {
+    background: linear-gradient(135deg, #fde8d4, #e8dff8);
+    border-radius: var(--radius-lg);
+    padding: 40px;
+    display: flex; flex-direction: column; gap: 14px;
+    box-shadow: 0 20px 60px rgba(160,120,220,0.15);
+  }
+  .fv-row {
+    background: white; border-radius: 14px; padding: 16px 20px;
+    display: flex; align-items: center; gap: 14px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    transition: transform 0.2s;
+  }
+  .fv-row:hover { transform: translateX(4px); }
+  .fv-row-icon { font-size: 22px; }
+  .fv-row-text h4 { font-size: 14px; font-weight: 600; color: var(--text-dark); }
+  .fv-row-text p { font-size: 12px; color: var(--text-light); margin-top: 2px; }
+  .fv-row-badge {
+    margin-left: auto;
+    background: var(--lilac); color: var(--soft-purple);
+    border-radius: 50px; padding: 4px 12px; font-size: 11px; font-weight: 600;
+  }
+
+  /* CIRCLES SHOWCASE */
+  .circles-section {
+    background: linear-gradient(160deg, #f0eafc, #fde8d4 80%);
+  }
+  .circles-section .inner { max-width: 1100px; margin: 0 auto; }
+  .circles-section .header-row {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    margin-bottom: 48px; flex-wrap: wrap; gap: 20px;
+  }
+  .circles-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 20px;
+  }
+  .circle-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,0.8);
+    border-radius: var(--radius);
+    padding: 28px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+  }
+  .circle-card:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(140,100,200,0.18); }
+  .cc-icon { font-size: 36px; margin-bottom: 16px; }
+  .cc-name { font-size: 17px; font-weight: 700; color: var(--text-dark); margin-bottom: 8px; }
+  .cc-desc { font-size: 13px; color: var(--text-light); line-height: 1.6; margin-bottom: 16px; }
+  .cc-meta { display: flex; gap: 16px; }
+  .cc-tag {
+    background: var(--lilac); color: var(--soft-purple);
+    border-radius: 50px; padding: 4px 12px; font-size: 11px; font-weight: 600;
+  }
+  .cc-members { font-size: 12px; color: var(--text-light); display: flex; align-items: center; gap: 4px; }
+
+  /* ACTIVITIES */
+  .activities-section {
+    background: var(--white);
+  }
+  .activities-section .inner { max-width: 1100px; margin: 0 auto; }
+  .activities-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px; margin-top: 48px;
+  }
+  .activity-card {
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid rgba(200,180,240,0.2);
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+  }
+  .activity-card:hover { transform: translateY(-4px); box-shadow: 0 20px 48px rgba(140,100,200,0.14); }
+  .ac-header {
+    padding: 28px 24px 20px;
+    background: linear-gradient(135deg, #d9cef5, #f9c6a0);
+  }
+  .ac-date {
+    font-size: 12px; font-weight: 700; letter-spacing: 0.1em;
+    color: rgba(26,16,37,0.6); text-transform: uppercase; margin-bottom: 12px;
+  }
+  .ac-title { font-size: 18px; font-weight: 700; color: var(--text-dark); line-height: 1.35; }
+  .ac-body { background: white; padding: 20px 24px; }
+  .ac-desc { font-size: 14px; color: var(--text-mid); line-height: 1.7; margin-bottom: 16px; }
+  .ac-footer { display: flex; justify-content: space-between; align-items: center; }
+  .ac-badge {
+    background: var(--lilac); color: var(--soft-purple);
+    border-radius: 50px; padding: 5px 14px; font-size: 12px; font-weight: 600;
+  }
+  .ac-spots { font-size: 12px; color: var(--text-light); }
+
+  /* FEATURES LIST — Shopify-style table */
+  .features-table-section {
+    background: linear-gradient(180deg, #f5f0fc 0%, #fdf6ee 100%);
+  }
+  .features-table-section .inner { max-width: 1100px; margin: 0 auto; }
+  .ft-header { text-align: center; max-width: 620px; margin: 0 auto 64px; }
+  .features-columns {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px;
+  }
+  .fc-group h3 {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 17px; font-weight: 700; color: var(--text-dark);
+    margin-bottom: 20px; padding-bottom: 12px;
+    border-bottom: 2px solid var(--lavender);
+  }
+  .fc-item {
+    padding: 12px 0; border-bottom: 1px solid rgba(200,180,240,0.2);
+    display: flex; flex-direction: column; gap: 3px;
+  }
+  .fc-item-name { font-size: 14px; font-weight: 600; color: var(--text-dark); }
+  .fc-item-desc { font-size: 12px; color: var(--text-light); line-height: 1.5; }
+
+  /* FAQ */
+  .faq-section { background: var(--white); }
+  .faq-section .inner { max-width: 780px; margin: 0 auto; text-align: center; }
+  .faq-list { margin-top: 48px; text-align: left; }
+  .faq-item {
+    border-bottom: 1px solid rgba(200,180,240,0.3);
+    cursor: pointer;
+  }
+  .faq-q {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 22px 0;
+    font-size: 16px; font-weight: 600; color: var(--text-dark);
+    transition: color 0.2s;
+  }
+  .faq-q:hover { color: var(--soft-purple); }
+  .faq-icon { font-size: 22px; color: var(--soft-purple); transition: transform 0.3s; flex-shrink: 0; }
+  .faq-a {
+    font-size: 15px; color: var(--text-mid); line-height: 1.8;
+    max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.3s;
+  }
+  .faq-item.open .faq-a { max-height: 200px; padding-bottom: 20px; }
+  .faq-item.open .faq-icon { transform: rotate(45deg); }
+
+  /* CTA BANNER */
+  .cta-section {
+    background: linear-gradient(135deg, #1a1025 0%, #2e1854 100%);
+    text-align: center;
+    padding: 100px 48px;
+  }
+  .cta-section .section-label { color: var(--lavender); }
+  .cta-section .section-title { color: var(--white); margin-bottom: 14px; }
+  .cta-section .section-desc { color: rgba(255,255,255,0.6); margin: 0 auto 40px; }
+  .cta-section .btn-primary {
+    background: linear-gradient(90deg, var(--coral), var(--soft-purple));
+    font-size: 17px; padding: 16px 40px;
+    box-shadow: 0 8px 32px rgba(240,124,90,0.35);
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--text-dark); color: rgba(255,255,255,0.5);
+    padding: 40px 48px;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 16px;
+    font-size: 13px;
+  }
+  footer a { color: rgba(255,255,255,0.5); text-decoration: none; }
+  footer a:hover { color: white; }
+  .footer-links { display: flex; gap: 24px; }
+
+  /* SCROLL REVEAL */
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* ── MOBILE SHOWCASE ── */
+  .mobile-showcase {
+    background: linear-gradient(170deg, #1a1025 0%, #2a1548 50%, #1e1035 100%);
+    padding: 100px 48px;
+    overflow: hidden;
+    position: relative;
+  }
+  .mobile-showcase::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 50% at 80% 50%, rgba(168,141,224,0.15) 0%, transparent 70%),
+                radial-gradient(ellipse 40% 60% at 20% 80%, rgba(240,124,90,0.1) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .ms-inner {
+    max-width: 1100px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+    position: relative; z-index: 1;
+  }
+  .ms-left { }
+  .ms-left .section-label { color: var(--lavender); }
+  .ms-left .section-title { color: var(--white); margin-bottom: 20px; }
+  .ms-left .section-desc { color: rgba(255,255,255,0.6); margin-bottom: 40px; }
+
+  /* tab pills */
+  .ms-tabs {
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .ms-tab {
+    display: flex; align-items: center; gap: 16px;
+    padding: 16px 20px; border-radius: 14px;
+    cursor: pointer; border: 1px solid transparent;
+    transition: all 0.3s;
+  }
+  .ms-tab:hover { background: rgba(255,255,255,0.06); }
+  .ms-tab.active {
+    background: rgba(168,141,224,0.18);
+    border-color: rgba(168,141,224,0.35);
+  }
+  .ms-tab-icon {
+    width: 42px; height: 42px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; flex-shrink: 0;
+    background: rgba(255,255,255,0.08);
+    transition: background 0.3s;
+  }
+  .ms-tab.active .ms-tab-icon { background: rgba(168,141,224,0.3); }
+  .ms-tab-body { flex: 1; }
+  .ms-tab-title {
+    font-size: 15px; font-weight: 600; color: rgba(255,255,255,0.9);
+    margin-bottom: 3px;
+  }
+  .ms-tab-desc { font-size: 13px; color: rgba(255,255,255,0.45); line-height: 1.5; }
+  .ms-tab.active .ms-tab-title { color: var(--white); }
+  .ms-tab.active .ms-tab-desc { color: rgba(255,255,255,0.65); }
+  .ms-tab-arrow {
+    font-size: 16px; color: rgba(255,255,255,0.25);
+    transition: color 0.3s, transform 0.3s;
+  }
+  .ms-tab.active .ms-tab-arrow { color: var(--lavender); transform: translateX(3px); }
+
+  /* phone mockup */
+  .ms-right {
+    display: flex; justify-content: center; align-items: center;
+  }
+  .phone-wrap {
+    position: relative; width: 280px;
+    filter: drop-shadow(0 40px 80px rgba(0,0,0,0.6));
+  }
+  .phone-frame {
+    width: 280px; height: 570px;
+    background: #0d0d12;
+    border-radius: 44px;
+    border: 2px solid rgba(255,255,255,0.12);
+    position: relative; overflow: hidden;
+    box-shadow:
+      inset 0 0 0 1px rgba(255,255,255,0.06),
+      0 0 0 8px rgba(255,255,255,0.04),
+      0 0 0 9px rgba(255,255,255,0.025);
+  }
+  /* notch */
+  .phone-frame::before {
+    content: '';
+    position: absolute; top: 12px; left: 50%; transform: translateX(-50%);
+    width: 80px; height: 24px;
+    background: #0d0d12;
+    border-radius: 0 0 14px 14px;
+    z-index: 20;
+    border: 2px solid rgba(255,255,255,0.08);
+    border-top: none;
+  }
+  /* side button */
+  .phone-frame::after {
+    content: '';
+    position: absolute; right: -3px; top: 120px;
+    width: 3px; height: 60px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 2px;
+  }
+  .phone-screen {
+    width: 100%; height: 100%;
+    overflow: hidden; position: relative;
+    border-radius: 42px;
+  }
+  /* slides */
+  .phone-slides { display: flex; width: 100%; height: 100%; transition: none; }
+  .phone-slide {
+    min-width: 100%; height: 100%;
+    display: flex; flex-direction: column;
+    position: absolute; top: 0; left: 0;
+    opacity: 0; transition: opacity 0.5s ease;
+    pointer-events: none;
+  }
+  .phone-slide.active { opacity: 1; pointer-events: auto; }
+
+  /* ── slide: 首页 ── */
+  .slide-home { background: linear-gradient(160deg,#fde8d4,#d9cef5); }
+  .slide-home .s-nav {
+    padding: 44px 16px 12px;
+    display: flex; justify-content: space-between; align-items: center;
+    background: rgba(255,255,255,0.55); backdrop-filter: blur(8px);
+  }
+  .slide-home .s-logo { font-size: 14px; font-weight: 700; color: #1a1025; font-family:'Noto Serif SC',serif; }
+  .slide-home .s-avatar { width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg,#f07c5a,#a88de0); }
+  .slide-home .s-tip {
+    margin: 8px 12px; padding: 8px 12px; border-radius: 10px;
+    background: rgba(240,124,90,0.12); font-size: 10px; color: #f07c5a;
+  }
+  .slide-home .s-hero {
+    margin: 10px 12px 0; padding: 18px; border-radius: 16px;
+    background: rgba(255,255,255,0.65); backdrop-filter: blur(12px);
+    text-align: center;
+  }
+  .slide-home .s-hero h2 { font-size: 15px; font-weight: 700; color: #1a1025; margin-bottom: 4px; font-family:'Noto Serif SC',serif; }
+  .slide-home .s-hero p { font-size: 10px; color: #8b7aa8; }
+  .slide-home .s-stats {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+    margin: 10px 12px 0;
+  }
+  .slide-home .s-stat {
+    background: rgba(255,255,255,0.65); border-radius: 12px; padding: 10px;
+    text-align: center;
+  }
+  .slide-home .s-stat .sv { font-size: 16px; font-weight: 700; color: #1a1025; font-family:'Noto Serif SC',serif; }
+  .slide-home .s-stat .sl { font-size: 9px; color: #8b7aa8; }
+  .slide-home .s-heading { margin: 12px 12px 6px; font-size: 11px; font-weight: 700; color: #1a1025; }
+  .slide-home .s-mini-cards { display: flex; gap: 8px; padding: 0 12px; overflow: hidden; }
+  .slide-home .s-mini-card {
+    min-width: 100px; background: rgba(255,255,255,0.7); border-radius: 12px;
+    padding: 10px; flex-shrink: 0;
+  }
+  .slide-home .s-mini-card .mi { font-size: 18px; }
+  .slide-home .s-mini-card .mt { font-size: 10px; font-weight: 600; color: #1a1025; margin-top: 4px; }
+  .slide-home .s-mini-card .md { font-size: 9px; color: #8b7aa8; }
+
+  /* ── slide: 圈子广场 ── */
+  .slide-circle { background: linear-gradient(160deg,#f0eafc,#fde8d4); }
+  .slide-circle .s-header {
+    padding: 44px 16px 14px;
+    background: rgba(255,255,255,0.55); backdrop-filter: blur(8px);
+  }
+  .slide-circle .s-header h2 { font-size: 15px; font-weight: 700; color: #1a1025; font-family:'Noto Serif SC',serif; }
+  .slide-circle .s-cats {
+    display: flex; gap: 6px; margin-top: 10px; overflow: hidden; flex-wrap: wrap;
+  }
+  .s-cat {
+    padding: 4px 10px; border-radius: 50px; font-size: 9px; font-weight: 600;
+    background: rgba(168,141,224,0.15); color: #a88de0; border: 1px solid rgba(168,141,224,0.3);
+  }
+  .s-cat.on { background: #a88de0; color: white; }
+  .slide-circle .s-list { padding: 10px 12px; display: flex; flex-direction: column; gap: 8px; overflow: hidden; }
+  .s-ccard {
+    background: rgba(255,255,255,0.75); border-radius: 14px; padding: 12px;
+    display: flex; gap: 10px; align-items: flex-start;
+    border: 1px solid rgba(255,255,255,0.9);
+  }
+  .s-ccard .sci { font-size: 22px; }
+  .s-ccard .sct { flex: 1; }
+  .s-ccard .scn { font-size: 12px; font-weight: 700; color: #1a1025; }
+  .s-ccard .scd { font-size: 9px; color: #8b7aa8; margin-top: 2px; line-height: 1.4; }
+  .s-ccard .scb {
+    align-self: center; background: #e8dff8; color: #a88de0;
+    border-radius: 50px; padding: 3px 8px; font-size: 9px; font-weight: 600; white-space: nowrap;
+  }
+
+  /* ── slide: 热门活动 ── */
+  .slide-activity { background: #fff; }
+  .slide-activity .s-header {
+    padding: 44px 16px 14px;
+    background: linear-gradient(135deg,#fde8d4,#e8dff8);
+  }
+  .slide-activity .s-header h2 { font-size: 15px; font-weight: 700; color: #1a1025; font-family:'Noto Serif SC',serif; }
+  .slide-activity .s-header p { font-size: 10px; color: #8b7aa8; margin-top: 4px; }
+  .slide-activity .s-alist { padding: 12px; display: flex; flex-direction: column; gap: 10px; overflow: hidden; }
+  .s-acard { border-radius: 14px; overflow: hidden; border: 1px solid rgba(200,180,240,0.2); }
+  .s-acard .sah {
+    padding: 12px 14px 10px;
+    background: linear-gradient(135deg,#fde8d4,#e8dff8);
+  }
+  .s-acard:nth-child(2) .sah { background: linear-gradient(135deg,#c3f0d8,#c9e8f5); }
+  .s-acard:nth-child(3) .sah { background: linear-gradient(135deg,#f5d4f0,#d4e0f5); }
+  .s-acard .sad { font-size: 9px; font-weight: 700; color: rgba(26,16,37,0.5); letter-spacing: 0.05em; }
+  .s-acard .sat { font-size: 12px; font-weight: 700; color: #1a1025; margin-top: 3px; }
+  .s-acard .sab { background: white; padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; }
+  .s-acard .sabadge {
+    background: #e8dff8; color: #a88de0;
+    border-radius: 50px; padding: 3px 8px; font-size: 9px; font-weight: 600;
+  }
+  .s-acard .sasp { font-size: 9px; color: #8b7aa8; }
+
+  /* ── slide: 消息 ── */
+  .slide-message { background: #fafafa; }
+  .slide-message .s-header {
+    padding: 44px 16px 14px;
+    background: white;
+    border-bottom: 1px solid rgba(200,180,240,0.2);
+  }
+  .slide-message .s-header h2 { font-size: 15px; font-weight: 700; color: #1a1025; font-family:'Noto Serif SC',serif; }
+  .slide-message .s-mtabs { display: flex; gap: 4px; margin-top: 10px; }
+  .s-mtab {
+    padding: 5px 12px; border-radius: 50px; font-size: 10px; font-weight: 600;
+    background: #f0f0f5; color: #8b7aa8; cursor: default;
+  }
+  .s-mtab.on { background: #a88de0; color: white; }
+  .slide-message .s-mlist { display: flex; flex-direction: column; }
+  .s-mrow {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 16px; border-bottom: 1px solid rgba(200,180,240,0.15);
+    background: white;
+  }
+  .s-mrow .smav {
+    width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center; font-size: 16px;
+  }
+  .s-mrow .smav.c1 { background: linear-gradient(135deg,#fde8d4,#f07c5a); }
+  .s-mrow .smav.c2 { background: linear-gradient(135deg,#c9b8f0,#a88de0); }
+  .s-mrow .smav.c3 { background: linear-gradient(135deg,#c3f0d8,#5acba0); }
+  .s-mrow .smav.c4 { background: linear-gradient(135deg,#f5d4f0,#d080c0); }
+  .s-mrow .sminfo { flex: 1; min-width: 0; }
+  .s-mrow .smname { font-size: 12px; font-weight: 600; color: #1a1025; }
+  .s-mrow .smprev { font-size: 10px; color: #8b7aa8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .s-mrow .smtime { font-size: 9px; color: #c0b0d0; }
+  .s-unread {
+    width: 16px; height: 16px; border-radius: 50%; background: #f07c5a;
+    color: white; font-size: 8px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+
+  /* ── slide: 个人主页 ── */
+  .slide-user { background: #f5f0fc; }
+  .slide-user .s-ubg {
+    height: 110px;
+    background: linear-gradient(135deg,#c9b8f0,#f9c6a0);
+    position: relative; border-radius: 0 0 24px 24px;
+  }
+  .slide-user .s-notch { /* spacer */ height: 44px; }
+  .slide-user .s-uav {
+    position: absolute; bottom: -28px; left: 20px;
+    width: 56px; height: 56px; border-radius: 50%;
+    background: linear-gradient(135deg,#f07c5a,#a88de0);
+    border: 3px solid white;
+    display: flex; align-items: center; justify-content: center; font-size: 24px;
+  }
+  .slide-user .s-editbtn {
+    position: absolute; bottom: 8px; right: 14px;
+    background: rgba(255,255,255,0.8); border-radius: 50px;
+    padding: 4px 10px; font-size: 9px; font-weight: 600; color: #4a3d60;
+  }
+  .slide-user .s-uinfo { padding: 36px 20px 12px; }
+  .slide-user .s-uname { font-size: 15px; font-weight: 700; color: #1a1025; font-family:'Noto Serif SC',serif; }
+  .slide-user .s-uschool { font-size: 10px; color: #8b7aa8; margin-top: 2px; }
+  .slide-user .s-utabs {
+    display: flex; gap: 0; padding: 0 12px;
+    background: white; border-radius: 12px; margin: 0 12px;
+    overflow: hidden;
+  }
+  .s-utab {
+    flex: 1; text-align: center; padding: 10px 4px; font-size: 9px; font-weight: 600;
+    color: #8b7aa8; border-bottom: 2px solid transparent; white-space: nowrap;
+  }
+  .s-utab.on { color: #a88de0; border-color: #a88de0; }
+  .slide-user .s-ucontent { padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+  .s-upost {
+    background: white; border-radius: 12px; padding: 12px;
+    border: 1px solid rgba(200,180,240,0.15);
+  }
+  .s-upost .spt { font-size: 12px; font-weight: 600; color: #1a1025; }
+  .s-upost .spc { font-size: 10px; color: #8b7aa8; margin-top: 3px; line-height: 1.4; }
+  .s-upost .spf { display: flex; gap: 10px; margin-top: 8px; font-size: 9px; color: #c0b0d0; }
+
+  /* phone bottom bar */
+  .phone-bottombar {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 54px;
+    background: rgba(255,255,255,0.92); backdrop-filter: blur(12px);
+    border-top: 1px solid rgba(200,180,240,0.2);
+    display: flex; align-items: center; justify-content: space-around;
+    padding: 0 8px 8px;
+    z-index: 30; border-radius: 0 0 42px 42px;
+  }
+  .pb-item {
+    display: flex; flex-direction: column; align-items: center; gap: 2px;
+    flex: 1; cursor: pointer; transition: opacity 0.2s;
+    padding: 4px;
+  }
+  .pb-item .pbi { font-size: 18px; }
+  .pb-item .pbl { font-size: 8px; color: #8b7aa8; font-weight: 600; }
+  .pb-item.on .pbl { color: #a88de0; }
+  .pb-item.on .pbi { filter: drop-shadow(0 0 4px rgba(168,141,224,0.6)); }
+
+  /* progress dots */
+  .ms-dots {
+    display: flex; gap: 8px; margin-top: 28px;
+  }
+  .ms-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: rgba(255,255,255,0.2); transition: all 0.3s; cursor: pointer;
+  }
+  .ms-dot.active { background: var(--lavender); width: 24px; border-radius: 4px; }
+
+  /* glow ring around phone */
+  .phone-glow {
+    position: absolute; inset: -20px;
+    border-radius: 64px;
+    background: radial-gradient(ellipse at center, rgba(168,141,224,0.2) 0%, transparent 70%);
+    pointer-events: none;
+    animation: glowPulse 3s ease-in-out infinite;
+  }
+  @keyframes glowPulse {
+    0%,100% { opacity: 0.6; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.04); }
+  }
+
+  @media (max-width: 768px) {
+    nav { padding: 14px 20px; }
+    .nav-links { display: none; }
+    section { padding: 64px 20px; }
+    .features-split .inner { grid-template-columns: 1fr; gap: 40px; }
+    .features-columns { grid-template-columns: 1fr; }
+    footer { flex-direction: column; text-align: center; }
+    .ms-inner { grid-template-columns: 1fr; gap: 48px; }
+    .ms-right { order: -1; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">数字<span>文化</span></div>
+  <div class="nav-links">
+    <a href="#showcase">移动预览</a>
+    <a href="#circles">圈子广场</a>
+    <a href="#activities">热门活动</a>
+    <a href="#features">功能特色</a>
+    <a href="#faq">常见问题</a>
+  </div>
+  <button class="nav-cta" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">立即体验 →</button>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">🎓 福州大学至诚学院 · 专属社群平台</div>
+  <h1>找到属于你的<br><em>那个圈子</em></h1>
+  <p class="hero-sub">圈子自由选，热爱不设限。在这里，每一种兴趣都有归属，每一个创意都被看见。</p>
+  <div class="hero-btns">
+    <button class="btn-primary" onclick="document.getElementById('circles').scrollIntoView({behavior:'smooth'})">探索圈子广场</button>
+    <button class="btn-outline" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">了解全部功能</button>
+  </div>
+  <div class="hero-preview">
+    <div class="preview-card">
+      <div class="pc-icon">👥</div>
+      <div class="pc-value">7</div>
+      <div class="pc-label">兴趣圈子</div>
+    </div>
+    <div class="preview-card">
+      <div class="pc-icon">🌟</div>
+      <div class="pc-value">666+</div>
+      <div class="pc-label">活跃成员</div>
+    </div>
+    <div class="preview-card">
+      <div class="pc-icon">📝</div>
+      <div class="pc-value">333</div>
+      <div class="pc-label">讨论帖子</div>
+    </div>
+    <div class="preview-card">
+      <div class="pc-icon">🎉</div>
+      <div class="pc-value">6</div>
+      <div class="pc-label">精彩活动</div>
+    </div>
+  </div>
+</div>
+
+<!-- FEATURES SPLIT -->
+<section class="features-split">
+  <div class="inner">
+    <div class="reveal">
+      <div class="section-label">核心功能</div>
+      <h2 class="section-title">让集成工具为你<br>高效服务</h2>
+      <p class="section-desc">从发现圈子到参与活动，从实时聊天到个人主页管理，一站式满足你的校园社交需求。</p>
+    </div>
+    <div class="feature-visual reveal">
+      <div class="fv-row">
+        <div class="fv-row-icon">🔍</div>
+        <div class="fv-row-text">
+          <h4>圈子广场</h4>
+          <p>按分类筛选，快速找到感兴趣的圈子</p>
+        </div>
+        <div class="fv-row-badge">新</div>
+      </div>
+      <div class="fv-row">
+        <div class="fv-row-icon">💬</div>
+        <div class="fv-row-text">
+          <h4>即时私聊 &amp; 社群</h4>
+          <p>私聊、群聊、通知三合一消息中心</p>
+        </div>
+        <div class="fv-row-badge">热</div>
+      </div>
+      <div class="fv-row">
+        <div class="fv-row-icon">✍️</div>
+        <div class="fv-row-text">
+          <h4>帖子发布系统</h4>
+          <p>记录精彩瞬间，分享到对应圈子</p>
+        </div>
+        <div class="fv-row-badge">+</div>
+      </div>
+      <div class="fv-row">
+        <div class="fv-row-icon">📅</div>
+        <div class="fv-row-text">
+          <h4>活动日历</h4>
+          <p>报名线上线下活动，一键查看详情</p>
+        </div>
+        <div class="fv-row-badge">活</div>
+      </div>
+      <div class="fv-row">
+        <div class="fv-row-icon">👤</div>
+        <div class="fv-row-text">
+          <h4>个人主页</h4>
+          <p>管理帖子、点赞、圈子、好友</p>
+        </div>
+        <div class="fv-row-badge">我</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MOBILE SHOWCASE -->
+<section class="mobile-showcase" id="showcase">
+  <div class="ms-inner">
+    <div class="ms-left reveal">
+      <div class="section-label">移动端预览</div>
+      <h2 class="section-title">每个板块<br>触手可及</h2>
+      <p class="section-desc">从首页到个人主页，所有功能都经过精心设计，在移动端流畅呈现。点击左侧标签或手机底部导航逐一探索。</p>
+      <div class="ms-tabs" id="msTabs">
+        <div class="ms-tab active" onclick="setSlide(0)">
+          <div class="ms-tab-icon">🏠</div>
+          <div class="ms-tab-body"><div class="ms-tab-title">首页</div><div class="ms-tab-desc">数据概览、热门圈子、精选帖子一站尽览</div></div>
+          <div class="ms-tab-arrow">→</div>
+        </div>
+        <div class="ms-tab" onclick="setSlide(1)">
+          <div class="ms-tab-icon">👥</div>
+          <div class="ms-tab-body"><div class="ms-tab-title">圈子广场</div><div class="ms-tab-desc">分类筛选，快速发现感兴趣的圈子</div></div>
+          <div class="ms-tab-arrow">→</div>
+        </div>
+        <div class="ms-tab" onclick="setSlide(2)">
+          <div class="ms-tab-icon">📅</div>
+          <div class="ms-tab-body"><div class="ms-tab-title">热门活动</div><div class="ms-tab-desc">线上线下活动，查看详情一键报名</div></div>
+          <div class="ms-tab-arrow">→</div>
+        </div>
+        <div class="ms-tab" onclick="setSlide(3)">
+          <div class="ms-tab-icon">💬</div>
+          <div class="ms-tab-body"><div class="ms-tab-title">消息中心</div><div class="ms-tab-desc">私聊、社群、系统通知三合一</div></div>
+          <div class="ms-tab-arrow">→</div>
+        </div>
+        <div class="ms-tab" onclick="setSlide(4)">
+          <div class="ms-tab-icon">👤</div>
+          <div class="ms-tab-body"><div class="ms-tab-title">个人主页</div><div class="ms-tab-desc">帖子、点赞、圈子、好友统一管理</div></div>
+          <div class="ms-tab-arrow">→</div>
+        </div>
+      </div>
+      <div class="ms-dots" id="msDots">
+        <div class="ms-dot active" onclick="setSlide(0)"></div>
+        <div class="ms-dot" onclick="setSlide(1)"></div>
+        <div class="ms-dot" onclick="setSlide(2)"></div>
+        <div class="ms-dot" onclick="setSlide(3)"></div>
+        <div class="ms-dot" onclick="setSlide(4)"></div>
+      </div>
+    </div>
+
+    <div class="ms-right reveal">
+      <div class="phone-wrap">
+        <div class="phone-glow"></div>
+        <div class="phone-frame">
+          <div class="phone-screen">
+
+            <!-- Slide 0: 首页 -->
+            <div class="phone-slide slide-home active" id="slide-0">
+              <div class="s-nav">
+                <div class="s-logo">数字文化</div>
+                <div style="display:flex;gap:8px;align-items:center"><span style="font-size:10px;color:#8b7aa8">首页</span><div class="s-avatar"></div></div>
+              </div>
+              <div class="s-tip">🔒 快去广场加入感兴趣的圈子吧！</div>
+              <div class="s-hero"><h2>找到属于你的圈子</h2><p>圈子自由选，热爱不设限</p></div>
+              <div class="s-stats">
+                <div class="s-stat"><div class="sv">7</div><div class="sl">兴趣圈子</div></div>
+                <div class="s-stat"><div class="sv">666+</div><div class="sl">活跃成员</div></div>
+                <div class="s-stat"><div class="sv">333</div><div class="sl">讨论帖子</div></div>
+                <div class="s-stat"><div class="sv">6</div><div class="sl">精彩活动</div></div>
+              </div>
+              <div class="s-heading">🔥 热门圈子</div>
+              <div class="s-mini-cards">
+                <div class="s-mini-card"><div class="mi">📸</div><div class="mt">摄影部落</div><div class="md">128人</div></div>
+                <div class="s-mini-card"><div class="mi">🎮</div><div class="mt">游戏玩家</div><div class="md">204人</div></div>
+                <div class="s-mini-card"><div class="mi">🎵</div><div class="mt">音乐社</div><div class="md">143人</div></div>
+              </div>
+            </div>
+
+            <!-- Slide 1: 圈子广场 -->
+            <div class="phone-slide slide-circle" id="slide-1">
+              <div class="s-header">
+                <h2>圈子广场</h2>
+                <div class="s-cats">
+                  <div class="s-cat on">全部</div><div class="s-cat">文艺创作</div><div class="s-cat">体育运动</div><div class="s-cat">线上社群</div>
+                </div>
+              </div>
+              <div class="s-list">
+                <div class="s-ccard"><div class="sci">📸</div><div class="sct"><div class="scn">摄影部落</div><div class="scd">用镜头记录校园精彩瞬间</div></div><div class="scb">已加入</div></div>
+                <div class="s-ccard"><div class="sci">⚽</div><div class="sct"><div class="scn">足球联盟</div><div class="scd">组织友谊赛，招募队友</div></div><div class="scb" style="background:#f07c5a22;color:#f07c5a">加入</div></div>
+                <div class="s-ccard"><div class="sci">🎮</div><div class="sct"><div class="scn">游戏玩家</div><div class="scd">线上开黑，分享攻略</div></div><div class="scb">已加入</div></div>
+                <div class="s-ccard"><div class="sci">📚</div><div class="sct"><div class="scn">读书会</div><div class="scd">每月共读，线下沙龙</div></div><div class="scb" style="background:#f07c5a22;color:#f07c5a">加入</div></div>
+              </div>
+            </div>
+
+            <!-- Slide 2: 热门活动 -->
+            <div class="phone-slide slide-activity" id="slide-2">
+              <div class="s-header"><h2>热门活动</h2><p>线上线下全覆盖，随时报名</p></div>
+              <div class="s-alist">
+                <div class="s-acard"><div class="sah"><div class="sad">2025年 · 6月</div><div class="sat">校园摄影大赛</div></div><div class="sab"><div class="sabadge">🎖 文艺</div><div class="sasp">剩余 42/100</div></div></div>
+                <div class="s-acard"><div class="sah"><div class="sad">2025年 · 5月</div><div class="sat">三对三篮球友谊赛</div></div><div class="sab"><div class="sabadge" style="background:#c3f0d833;color:#3aaa70">⚡ 体育</div><div class="sasp">剩余 8/32</div></div></div>
+                <div class="s-acard"><div class="sah"><div class="sad">2025年 · 7月</div><div class="sat">游戏嘉年华 Online</div></div><div class="sab"><div class="sabadge" style="background:#f5d4f033;color:#c060a0">🎮 线上</div><div class="sasp">剩余 200/300</div></div></div>
+              </div>
+            </div>
+
+            <!-- Slide 3: 消息 -->
+            <div class="phone-slide slide-message" id="slide-3">
+              <div class="s-header">
+                <h2>消息</h2>
+                <div class="s-mtabs"><div class="s-mtab on">私聊</div><div class="s-mtab">社群</div><div class="s-mtab">通知</div></div>
+              </div>
+              <div class="s-mlist">
+                <div class="s-mrow"><div class="smav c1">😊</div><div class="sminfo"><div class="smname">张小明</div><div class="smprev">周末一起去拍照吗？</div></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px"><div class="smtime">刚刚</div><div class="s-unread">2</div></div></div>
+                <div class="s-mrow"><div class="smav c2">🎵</div><div class="sminfo"><div class="smname">李雨晴</div><div class="smprev">新歌学会了，来听听？</div></div><div class="smtime">10分钟</div></div>
+                <div class="s-mrow"><div class="smav c3">⚽</div><div class="sminfo"><div class="smname">王大力</div><div class="smprev">下午有空打球吗</div></div><div class="smtime">昨天</div></div>
+                <div class="s-mrow"><div class="smav c4">📚</div><div class="sminfo"><div class="smname">陈思远</div><div class="smprev">本月书单发出来了</div></div><div class="smtime">昨天</div></div>
+                <div class="s-mrow"><div class="smav" style="background:linear-gradient(135deg,#fde8d4,#c9b8f0)">🎮</div><div class="sminfo"><div class="smname">林小游</div><div class="smprev">今晚开黑，来不来</div></div><div class="smtime">周一</div></div>
+              </div>
+            </div>
+
+            <!-- Slide 4: 个人主页 -->
+            <div class="phone-slide slide-user" id="slide-4">
+              <div class="s-ubg">
+                <div class="s-notch"></div>
+                <div class="s-uav">😊</div>
+                <div class="s-editbtn">✏️ 编辑资料</div>
+              </div>
+              <div class="s-uinfo"><div class="s-uname">至诚同学</div><div class="s-uschool">福州大学至诚学院</div></div>
+              <div class="s-utabs">
+                <div class="s-utab on">帖子</div><div class="s-utab">点赞</div><div class="s-utab">圈子</div><div class="s-utab">好友</div><div class="s-utab">举报</div>
+              </div>
+              <div class="s-ucontent">
+                <div class="s-upost"><div class="spt">今天拍到了超美的夕阳🌅</div><div class="spc">夕阳西下，图书馆前的银杏树叶正好落下...</div><div class="spf"><span>❤️ 42</span><span>💬 8</span><span>摄影部落</span></div></div>
+                <div class="s-upost"><div class="spt">推荐一部最近看的好书 📚</div><div class="spc">《活着》—— 余华。读完以后久久不能平静...</div><div class="spf"><span>❤️ 67</span><span>💬 15</span><span>读书会</span></div></div>
+              </div>
+            </div>
+
+            <!-- Bottom Nav Bar -->
+            <div class="phone-bottombar">
+              <div class="pb-item on" id="pbi-0" onclick="setSlide(0)"><div class="pbi">🏠</div><div class="pbl">首页</div></div>
+              <div class="pb-item" id="pbi-1" onclick="setSlide(1)"><div class="pbi">👥</div><div class="pbl">圈子</div></div>
+              <div class="pb-item" id="pbi-2" onclick="setSlide(2)"><div class="pbi">📅</div><div class="pbl">活动</div></div>
+              <div class="pb-item" id="pbi-3" onclick="setSlide(3)"><div class="pbi">💬</div><div class="pbl">消息</div></div>
+              <div class="pb-item" id="pbi-4" onclick="setSlide(4)"><div class="pbi">👤</div><div class="pbl">我的</div></div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CIRCLES SHOWCASE -->
+<section class="circles-section" id="circles">
+  <div class="inner">
+    <div class="header-row reveal">
+      <div>
+        <div class="section-label">圈子广场</div>
+        <h2 class="section-title">找到志同道合的伙伴</h2>
+        <p class="section-desc">7 个精心策划的兴趣圈子，覆盖文艺、体育、线上线下多个维度。</p>
+      </div>
+      <button class="btn-primary" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">全部圈子 →</button>
+    </div>
+    <div class="circles-grid">
+      <div class="circle-card reveal">
+        <div class="cc-icon">📸</div>
+        <div class="cc-name">摄影部落</div>
+        <div class="cc-desc">用镜头记录校园的每一个精彩瞬间，分享构图技巧与后期经验。</div>
+        <div class="cc-meta">
+          <div class="cc-tag">文艺创作</div>
+          <div class="cc-members">👤 128人</div>
+        </div>
+      </div>
+      <div class="circle-card reveal">
+        <div class="cc-icon">⚽</div>
+        <div class="cc-name">足球联盟</div>
+        <div class="cc-desc">组织校内友谊赛，讨论赛事资讯，招募队友一起驰骋绿茵场。</div>
+        <div class="cc-meta">
+          <div class="cc-tag">体育运动</div>
+          <div class="cc-members">👤 96人</div>
+        </div>
+      </div>
+      <div class="circle-card reveal">
+        <div class="cc-icon">🎮</div>
+        <div class="cc-name">游戏玩家</div>
+        <div class="cc-desc">线上开黑，分享攻略，寻找同服好友，一起登顶荣耀。</div>
+        <div class="cc-meta">
+          <div class="cc-tag">线上社群</div>
+          <div class="cc-members">👤 204人</div>
+        </div>
+      </div>
+      <div class="circle-card reveal">
+        <div class="cc-icon">📚</div>
+        <div class="cc-name">读书会</div>
+        <div class="cc-desc">每月共读一本好书，线下沙龙交流，拓宽彼此的认知边界。</div>
+        <div class="cc-meta">
+          <div class="cc-tag">线下活动</div>
+          <div class="cc-members">👤 67人</div>
+        </div>
+      </div>
+      <div class="circle-card reveal">
+        <div class="cc-icon">🎨</div>
+        <div class="cc-name">设计工坊</div>
+        <div class="cc-desc">UI/平面/插画爱好者聚集地，互相点评作品，共同成长。</div>
+        <div class="cc-meta">
+          <div class="cc-tag">文艺创作</div>
+          <div class="cc-members">👤 85人</div>
+        </div>
+      </div>
+      <div class="circle-card reveal">
+        <div class="cc-icon">🏸</div>
+        <div class="cc-name">羽毛球队</div>
+        <div class="cc-desc">定期约场切磋球技，组织训练营，欢迎新手和老鸟加入。</div>
+        <div class="cc-meta">
+          <div class="cc-tag">体育运动</div>
+          <div class="cc-members">👤 52人</div>
+        </div>
+      </div>
+      <div class="circle-card reveal">
+        <div class="cc-icon">🎵</div>
+        <div class="cc-name">音乐社</div>
+        <div class="cc-desc">弹唱、说唱、电音，只要热爱音乐，这里就有你的舞台。</div>
+        <div class="cc-meta">
+          <div class="cc-tag">文艺创作</div>
+          <div class="cc-members">👤 143人</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ACTIVITIES -->
+<section class="activities-section" id="activities">
+  <div class="inner">
+    <div class="reveal" style="text-align:center;max-width:580px;margin:0 auto;">
+      <div class="section-label">热门活动</div>
+      <h2 class="section-title">参与精彩的校园活动</h2>
+      <p class="section-desc">线上线下全覆盖，随时报名，随时出发。</p>
+    </div>
+    <div class="activities-grid">
+      <div class="activity-card reveal">
+        <div class="ac-header">
+          <div class="ac-date">2025年 · 6月</div>
+          <div class="ac-title">校园摄影大赛</div>
+        </div>
+        <div class="ac-body">
+          <div class="ac-desc">以"青春·光阴"为主题，用镜头记录你眼中最美的校园，优秀作品将在展览展出。</div>
+          <div class="ac-footer">
+            <div class="ac-badge">🎖 文艺</div>
+            <div class="ac-spots">剩余名额 42/100</div>
+          </div>
+        </div>
+      </div>
+      <div class="activity-card reveal">
+        <div class="ac-header" style="background:linear-gradient(135deg,#c3f0d8,#c9e8f5)">
+          <div class="ac-date">2025年 · 5月</div>
+          <div class="ac-title">三对三篮球友谊赛</div>
+        </div>
+        <div class="ac-body">
+          <div class="ac-desc">报名以3人为单位的小队，上演紧张刺激的半场对决，冠军队获得专属奖品。</div>
+          <div class="ac-footer">
+            <div class="ac-badge">⚡ 体育</div>
+            <div class="ac-spots">剩余名额 8/32</div>
+          </div>
+        </div>
+      </div>
+      <div class="activity-card reveal">
+        <div class="ac-header" style="background:linear-gradient(135deg,#f5d4f0,#d4e0f5)">
+          <div class="ac-date">2025年 · 7月</div>
+          <div class="ac-title">游戏嘉年华 Online</div>
+        </div>
+        <div class="ac-body">
+          <div class="ac-desc">多游戏线上联赛，与全校玩家同台竞技，直播互动，有趣有料。</div>
+          <div class="ac-footer">
+            <div class="ac-badge">🎮 线上</div>
+            <div class="ac-spots">剩余名额 200/300</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES TABLE -->
+<section class="features-table-section" id="features">
+  <div class="inner">
+    <div class="ft-header reveal">
+      <div class="section-label">完整功能列表</div>
+      <h2 class="section-title">一个平台，满足全部需求</h2>
+    </div>
+    <div class="features-columns">
+      <div class="fc-group reveal">
+        <h3>🏠 首页 &amp; 导航</h3>
+        <div class="fc-item">
+          <div class="fc-item-name">数据统计看板</div>
+          <div class="fc-item-desc">实时展示圈子数、成员数、帖子数和活动数</div>
+        </div>
+        <div class="fc-item">
+          <div class="fc-item-name">热门圈子推荐</div>
+          <div class="fc-item-desc">首页直接展示热度最高的几个圈子</div>
+        </div>
+        <div class="fc-item">
+          <div class="fc-item-name">近期活动预览</div>
+          <div class="fc-item-desc">即将开始的活动卡片，一键跳转报名</div>
+        </div>
+        <div class="fc-item">
+          <div class="fc-item-name">精选帖子流</div>
+          <div class="fc-item-desc">优质帖子聚合，快速浏览社区动态</div>
+        </div>
+        <div class="fc-item">
+          <div class="fc-item-name">顶部状态提示</div>
+          <div class="fc-item-desc">未加入圈子时引导用户探索广场</div>
+        </div>
+      </div>
+      <div class="fc-group reveal">
+        <h3>👥 圈子 &amp; 帖子</h3>
+        <div class="fc-item">
+          <div class="fc-item-name">分类筛选</div>
+          <div class="fc-item-desc">文艺创作、体育运动、线上社群、线下活动四大分类</div>
+        </div>
+        <div class="fc-item">
+          <div class="fc-item-name">圈子详情页</div>
+          <div class="fc-item-desc">查看圈子介绍、成员列表与所有帖子</div>
+        </div>
+        <div class="fc-item">
+          <div class="fc-item-name">加入 &amp; 退出圈子</div>
+          <div class="fc-item-desc">自由选择感兴趣的圈子，随时可以退出</div>
+        </div>
+        <div class="fc-item">
+          <div class="fc-item-name">发布帖子</div>
+          <div class="fc-item-desc">填写标题、内容并选择目标圈子发布</div>
+        </div>
+        <div class="fc-item">
+          <div class="fc-item-name">点赞 &amp; 举报</div>
+          <div class="fc-item-desc">互动点赞，对违规内容进行举报</div>
+        </div>
+      </div>
+      <div class="fc-group reveal">
+        <h3>💬 消息 &amp; 个人</h3>
+        <div class="fc-item">
+          <div class="fc-item-name">私聊会话</div>
+          <div class="fc-item-desc">与好友一对一实时聊天</div>
+        </div>
+        <div class="fc-item">
+          <div class="fc-item-name">社群消息</div>
+          <div class="fc-item-desc">所加入圈子的群组频道</div>
+        </div>
+        <div class="fc-item">
+          <div class="fc-item-name">系统通知</div>
+          <div class="fc-item-desc">互动提醒、活动通知等系统消息</div>
+        </div>
+        <div class="fc-item">
+          <div class="fc-item-name">个人主页</div>
+          <div class="fc-item-desc">查看我的帖子、点赞、圈子、好友、举报</div>
+        </div>
+        <div class="fc-item">
+          <div class="fc-item-name">编辑资料</div>
+          <div class="fc-item-desc">修改昵称、头像和个人背景</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section" id="faq">
+  <div class="inner">
+    <div class="reveal">
+      <div class="section-label">常见问题</div>
+      <h2 class="section-title">你可能想了解的</h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">数字文化平台是什么？<span class="faq-icon">+</span></div>
+        <div class="faq-a">数字文化是福州大学至诚学院的专属校园兴趣社群平台，致力于帮助同学找到志同道合的伙伴，参与丰富的圈子活动，打造属于自己的校园社交空间。</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">如何加入圈子？<span class="faq-icon">+</span></div>
+        <div class="faq-a">进入「圈子广场」页面，浏览感兴趣的圈子，点击「加入圈子」按钮即可。加入后可以发帖、参与讨论、接收活动通知。</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">我没有加入圈子可以看帖子吗？<span class="faq-icon">+</span></div>
+        <div class="faq-a">未加入任何圈子时，可以浏览首页精选的 10 条热门帖子。加入圈子后可以访问该圈子的所有帖子和社群频道。</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">如何参加线下活动？<span class="faq-icon">+</span></div>
+        <div class="faq-a">在「热门活动」页面查找感兴趣的活动，点击活动卡片查看详情，按照活动要求报名参与即可。线上活动通常需要提前报名，名额有限。</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">如何联系平台官方？<span class="faq-icon">+</span></div>
+        <div class="faq-a">可通过「关于我们」页面找到官方联系方式，包括邮箱 admin@fzu.edu.cn 和微信号 fzu_digital，欢迎反馈意见与建议。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="cta">
+  <div class="section-label">立即开始</div>
+  <h2 class="section-title">用数字文化，开启<br>你的校园社交新体验</h2>
+  <p class="section-desc">7 个圈子正在等你，666+ 位同学已加入</p>
+  <button class="btn-primary" onclick="window.open('index.html','_blank')">进入平台 →</button>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>© 2025 数字文化 · 福州大学至诚学院 &nbsp;v1.0</div>
+  <div class="footer-links">
+    <a href="#">关于我们</a>
+    <a href="#">联系方式</a>
+    <a href="mailto:admin@fzu.edu.cn">admin@fzu.edu.cn</a>
+  </div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), 80);
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Staggered siblings
+  document.querySelectorAll('.circles-grid, .activities-grid, .features-columns').forEach(grid => {
+    [...grid.children].forEach((child, i) => {
+      child.style.transitionDelay = (i * 80) + 'ms';
+    });
+  });
+
+  // Mobile showcase slide switcher
+  let currentSlide = 0;
+  let autoTimer = null;
+
+  function setSlide(idx) {
+    // hide current
+    document.getElementById('slide-' + currentSlide).classList.remove('active');
+    document.getElementById('pbi-' + currentSlide).classList.remove('on');
+    document.querySelectorAll('.ms-tab')[currentSlide].classList.remove('active');
+    document.querySelectorAll('.ms-dot')[currentSlide].classList.remove('active');
+
+    currentSlide = idx;
+
+    // show new
+    document.getElementById('slide-' + idx).classList.add('active');
+    document.getElementById('pbi-' + idx).classList.add('on');
+    document.querySelectorAll('.ms-tab')[idx].classList.add('active');
+    document.querySelectorAll('.ms-dot')[idx].classList.add('active');
+
+    // restart auto
+    clearInterval(autoTimer);
+    autoTimer = setInterval(() => setSlide((currentSlide + 1) % 5), 3500);
+  }
+
+  // auto-advance when showcase is visible
+  const showcaseEl = document.getElementById('showcase');
+  const showcaseObserver = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting) {
+      autoTimer = setInterval(() => setSlide((currentSlide + 1) % 5), 3500);
+    } else {
+      clearInterval(autoTimer);
+    }
+  }, { threshold: 0.3 });
+  showcaseObserver.observe(showcaseEl);
+  function toggleFaq(el) {
+    const isOpen = el.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(f => f.classList.remove('open'));
+    if (!isOpen) el.classList.add('open');
+  }
+</script>
+</body>
+</html>
