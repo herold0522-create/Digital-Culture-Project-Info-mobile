@@ -447,14 +447,22 @@
     overflow: hidden; position: relative;
     border-radius: 42px;
   }
-  /* slides */
+  /* scale wrapper — shrinks all slide content to fit the frame */
+  .phone-screen-inner {
+    position: absolute;
+    top: 0; left: 0;
+    width: 375px;          /* design width slides were built at */
+    height: 760px;         /* design height */
+    transform-origin: top left;
+    transform: scale(calc(280 / 375));   /* = 0.7467, fits 280px frame width */
+  }
   .phone-slides { display: flex; width: 100%; height: 100%; transition: none; }
   .phone-slide {
-    min-width: 100%; height: 100%;
+    width: 375px; height: 760px;
     display: flex; flex-direction: column;
     position: absolute; top: 0; left: 0;
     opacity: 0; transition: opacity 0.5s ease;
-    pointer-events: none;
+    pointer-events: none; overflow: hidden;
   }
   .phone-slide.active { opacity: 1; pointer-events: auto; }
 
@@ -636,12 +644,12 @@
   /* phone bottom bar */
   .phone-bottombar {
     position: absolute; bottom: 0; left: 0; right: 0;
-    height: 54px;
+    height: 68px;
     background: rgba(255,255,255,0.92); backdrop-filter: blur(12px);
     border-top: 1px solid rgba(200,180,240,0.2);
     display: flex; align-items: center; justify-content: space-around;
-    padding: 0 8px 8px;
-    z-index: 30; border-radius: 0 0 42px 42px;
+    padding: 0 8px 10px;
+    z-index: 30;
   }
   .pb-item {
     display: flex; flex-direction: column; align-items: center; gap: 2px;
@@ -837,6 +845,7 @@
         <div class="phone-glow"></div>
         <div class="phone-frame">
           <div class="phone-screen">
+            <div class="phone-screen-inner">
 
             <!-- Slide 0: 首页 -->
             <div class="phone-slide slide-home active" id="slide-0">
@@ -927,9 +936,9 @@
               <div class="pb-item" id="pbi-4" onclick="setSlide(4)"><div class="pbi">👤</div><div class="pbl">我的</div></div>
             </div>
 
-          </div>
-        </div>
-      </div>
+            </div><!-- /phone-screen-inner -->
+          </div><!-- /phone-screen -->
+        </div><!-- /phone-frame -->
     </div>
   </div>
 </section>
@@ -1188,7 +1197,7 @@
 
 <!-- FOOTER -->
 <footer>
-  <div>© 2025 数字文化 · 福州大学至诚学院 &nbsp;v1.0</div>
+  <div>© 2026 数字文化 · 福州大学至诚学院 &nbsp;v1.0</div>
   <div class="footer-links">
     <a href="#">关于我们</a>
     <a href="#">联系方式</a>
